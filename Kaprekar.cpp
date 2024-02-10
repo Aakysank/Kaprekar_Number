@@ -7,15 +7,6 @@
 
 using namespace std;
 
-set<long long> generateNumbers(long long minNumber, long long maxNumber)
-{
-	set<long long> numbers;
-	for (long long num = minNumber; num <= maxNumber; num++)
-		numbers.insert(num);
-
-	return numbers;
-}
-
 bool isKaprekarNumber(long long number, int nDigits)
 {
 	long long beta = 0, alpha = 0;
@@ -29,6 +20,18 @@ bool isKaprekarNumber(long long number, int nDigits)
 		return true;
 
 	return false;
+}
+
+set<long long> generateKaprekarNumbers(long long minNumber, long long maxNumber, int nDigits)
+{
+	set<long long> kaprekarNumbers;
+	for (long long num = minNumber; num <= maxNumber; num++)
+	{	
+		if (isKaprekarNumber(num, nDigits))
+			kaprekarNumbers.insert(num);
+	}
+
+	return kaprekarNumbers;
 }
 
 int main()
@@ -46,7 +49,7 @@ int main()
 	long long minNumber = 0ll, maxNumber = 0ll;
 	char* pMinNumber = NULL, * pMaxNumber = NULL, *errorData = NULL;
 
-	set<long long> numbersToCheck, kaprekarNums;
+	set<long long> kaprekarNums;
 	pMinNumber = (char*)malloc(sizeof(char) * nDigits);
 	pMaxNumber = (char*)malloc(sizeof(char) * nDigits);
 
@@ -80,17 +83,11 @@ int main()
 	free(pMinNumber);
 	free(pMaxNumber);
 
-	numbersToCheck = generateNumbers(minNumber, maxNumber);
-	if (numbersToCheck.size() <= 0)
+	kaprekarNums = generateKaprekarNumbers(minNumber, maxNumber, nDigits);
+	if (kaprekarNums.size() <= 0)
 	{
-		cout << "Unable to extract numbers between the given limits" << endl;
+		cout << "Unable to extract kaprekar numbers between the given limits" << endl;
 		return -4;
-	}
-
-	for (const auto& num : numbersToCheck)
-	{
-		if (isKaprekarNumber(num, nDigits))
-			kaprekarNums.insert(num);
 	}
 
 	cout << "The list of kaprekar numbers between " << minNumber << " and " << maxNumber << " are: " << endl;
